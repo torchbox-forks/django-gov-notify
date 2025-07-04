@@ -3,7 +3,7 @@ name: CI tests
 on: [push]
 
 env:
-  poetry-version: 1.8.2
+  poetry-version: 1.8.5
 
 jobs:
   lint:
@@ -20,13 +20,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
-        django-version: ["4.2.16", "5.0.9", "5.1.2"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        django-version: ["4.2", "5.1", "5.2"]
         exclude:
           # Django too new
-          - django-version: "5.0.9"
+          - django-version: "5.1"
             python-version: "3.9"
-          - django-version: "5.1.2"
+          - django-version: "5.2"
             python-version: "3.9"
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Run image
-        uses: abatilo/actions-poetry@v2
+        uses: abatilo/actions-poetry@v4
         with:
           poetry-version: ${{ env.poetry-version }}
       - name: Cache Poetry virtual env
@@ -58,13 +58,13 @@ jobs:
     needs: [build, lint]
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
-        django-version: ["4.2.16", "5.0.9", "5.1.2"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        django-version: ["4.2", "5.1", "5.2"]
         exclude:
           # Django too new
-          - django-version: "5.0.9"
+          - django-version: "5.1"
             python-version: "3.9"
-          - django-version: "5.1.2"
+          - django-version: "5.2"
             python-version: "3.9"
     steps:
       - uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Run image
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v4
         with:
           poetry-version: ${{ env.poetry-version }}
       - name: Cache Poetry virtual env
