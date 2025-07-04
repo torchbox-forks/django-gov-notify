@@ -72,23 +72,17 @@ jobs:
           # Django too old
           - django-version: "4.2"
             python-version: "3.13"
+    env:
+      DJANGO: ${{ matrix.django-version }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Run image
-        uses: abatilo/actions-poetry@v4
-        with:
-          poetry-version: ${{ env.poetry-version }}
-      - name: Cache Poetry virtual env
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-poetry-virtualenv
-        with:
-          path: .venv
-          key: ${{ runner.os }}-python-${{ matrix.python-version }}-django-${{ matrix.django-version }}-${{ hashFiles('pyproject.toml') }}
-      - name: Test
+      - name: Install tox and tox-gh-actions
         run: |
-          poetry run python runtests.py
+          python -m pip install --upgrade pip
+          pip install tox tox-gh-actions
+      - name: Test with tox
+        run: tox
