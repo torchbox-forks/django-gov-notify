@@ -28,6 +28,9 @@ jobs:
             python-version: "3.9"
           - django-version: "5.2"
             python-version: "3.9"
+          # Django too old
+          - django-version: "4.2"
+            python-version: "3.13"
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
